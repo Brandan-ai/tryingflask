@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Home | Super-Maths{% endblock %}
+
+{% block content %}
+  <div class="page-container">
+    <img src="{{ url_for('static', filename='images/superhero.png') }}"
+         alt="Superhero" class="hero-img">
+    <h1>Welcome, {{ current_user.username }}!</h1>
+    <p>You’re now on the home page.</p>
+
+    <!-- simple logout link -->
+    <a href="{{ url_for('logout') }}" class="btn-submit">Log Out</a>
+  </div>
+{% endblock %}

@@ -1,6 +1,6 @@
 # Forms for user registration and login, including validation
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError
 from .models import User  # Needed for duplicate checks
 
@@ -26,4 +26,5 @@ class LoginForm(FlaskForm):
     # Login form fields
     username = StringField('Username', validators=[DataRequired(), Length(3, 20)])
     password = PasswordField('Password', validators=[DataRequired()])
+    remember = BooleanField('Stay signed in?')
     submit = SubmitField('Login')

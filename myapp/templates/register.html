@@ -1,25 +1,79 @@
 {% extends "base.html" %}
-
-{% block title %}Login{% endblock %}
+{% block title %}Register | Super-Maths{% endblock %}
 
 {% block content %}
-  <h2>Login</h2>
-  <form method="POST">
-    {{ form.hidden_tag() }}
-    <div>
-      {{ form.username.label }}<br>
-      {{ form.username(size=20) }}
-    </div>
-    <div>
-      {{ form.password.label }}<br>
-      {{ form.password() }}
-    </div>
-    <div>
-      {{ form.submit() }}
-    </div>
-  </form>
-  <p>
-    New here?
-    <a href="{{ url_for('register') }}">Create an account</a>.
-  </p>
+  <div class="page-container">
+    <img src="{{ url_for('static', filename='images/back-button.png') }}"
+         alt="Back" class="btn-back"
+         onclick="location.href='{{ url_for('home') }}'">
+    <img src="{{ url_for('static', filename='images/superhero.png') }}"
+         alt="Superhero" class="hero-img">
+
+    <h1>Super-Maths Registration</h1>
+    <form method="POST" novalidate>
+      {{ form.hidden_tag() }}
+
+      <div class="form-group">
+        {{ form.email.label }}
+        {{ form.email(class="form-control", placeholder="Enter your email") }}
+      </div>
+      <div class="form-group">
+        {{ form.username.label }}
+        {{ form.username(class="form-control", placeholder="Choose a username") }}
+      </div>
+      <div class="form-group">
+        {{ form.password.label }}
+        {{ form.password(class="form-control", placeholder="Create a password") }}
+      </div>
+      <div class="form-group">
+        {{ form.confirm_password.label }}
+        {{ form.confirm_password(class="form-control", placeholder="Confirm your password") }}
+      </div>
+
+      <button type="submit" class="btn-submit">{{ form.submit.label.text }}</button>
+    </form>
+  </div>
+
+  {# Success Modal (green) #}
+  {% with msgs = get_flashed_messages(category_filter=['success']) %}
+    {% if msgs %}
+      <div id="success-modal" class="modal-overlay">
+        <div class="modal-content success">
+          <h3>Welcome Aboard!</h3>
+          <p>{{ msgs[0] }}</p>
+          <button class="modal-close success" onclick="closeSuccess()">Let’s Get Started</button>
+        </div>
+      </div>
+      <script>
+        function closeSuccess() {
+          document.getElementById('success-modal').style.display = 'none';
+          window.location.href = "{{ url_for('login') }}";
+        }
+        document.getElementById('success-modal').style.display = 'flex';
+      </script>
+    {% endif %}
+  {% endwith %}
+
+  {# Error Modal (red) #}
+  {% with errs = get_flashed_messages(category_filter=['error']) %}
+    {% if errs %}
+      <div id="error-modal" class="modal-overlay">
+        <div class="modal-content">
+          <h3>Error</h3>
+          <ul>
+            {% for m in errs %}
+              <li>{{ m }}</li>
+            {% endfor %}
+          </ul>
+          <button class="modal-close" onclick="closeError()">OK</button>
+        </div>
+      </div>
+      <script>
+        function closeError() {
+          document.getElementById('error-modal').style.display = 'none';
+        }
+        document.getElementById('error-modal').style.display = 'flex';
+      </script>
+    {% endif %}
+  {% endwith %}
 {% endblock %}

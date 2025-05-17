@@ -1,4 +1,5 @@
-# All app routes (register, login, dashboard, logout)
+# routes.py
+
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_user, logout_user, login_required, current_user
 from .forms import RegistrationForm, LoginForm
@@ -9,37 +10,48 @@ def init_routes(app):
 
     @login_manager.user_loader
     def load_user(user_id):
-        # Flask-Login uses this to reload user from session
         return User.query.get(int(user_id))
+
+    # ── Suppress Flask-Login's default flash messages ──
+    login_manager.login_view = 'login'
+    login_manager.login_message = None
+    login_manager.needs_refresh_message = None
 
     @app.route('/register', methods=['GET', 'POST'])
     def register():
-        from .models import User  # Safe local import
         if current_user.is_authenticated:
-            return redirect(url_for('dashboard'))
+            return redirect(url_for('home'))
+
         form = RegistrationForm()
         if form.validate_on_submit():
-            # Create user and hash password
             user = User(username=form.username.data, email=form.email.data)
             user.set_password(form.password.data)
             db.session.add(user)
             db.session.commit()
             flash('Account created!', 'success')
             return redirect(url_for('login'))
+
+        if form.is_submitted() and form.errors:
+            for field, errors in form.errors.items():
+                label = getattr(form, field).label.text
+                for err in errors:
+                    flash(f"{label}: {err}", 'error')
+
         return render_template('register.html', form=form)
 
     @app.route('/login', methods=['GET', 'POST'])
     def login():
-        from .models import User  # Safe local import
         if current_user.is_authenticated:
-            return redirect(url_for('dashboard'))
+            return redirect(url_for('home'))
+
         form = LoginForm()
         if form.validate_on_submit():
             user = User.query.filter_by(username=form.username.data).first()
             if user and user.check_password(form.password.data):
                 login_user(user)
-                return redirect(url_for('dashboard'))
-            flash('Invalid credentials.', 'danger')
+                return redirect(url_for('home'))
+            flash('Invalid credentials.', 'error')
+
         return render_template('login.html', form=form)
 
     @app.route('/logout')
@@ -50,5 +62,5 @@ def init_routes(app):
 
     @app.route('/')
     @login_required
-    def dashboard():
-        return f'Hello, {current_user.username}!'  # Simple landing page
+    def home():
+        return render_template('home.html')

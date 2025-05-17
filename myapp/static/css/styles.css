@@ -1,0 +1,198 @@
+/* Base reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Full-viewport centering */
+body {
+  font-family: sans-serif;
+  background: #f2f7fb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+/* Wrapper (from base.html) */
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100%;
+  width: 100%;
+}
+
+/* Card container */
+.page-container {
+  background: white;
+  padding: clamp(1.5rem, 2.5vw, 3rem);
+  border-radius: 1rem;
+  width: 100%;
+  max-width: clamp(300px, 60%, 480px);
+  text-align: center;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin: 0 auto;
+}
+
+/* Back button (register only) */
+.btn-back {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  width: clamp(24px, 5vw, 32px);
+  cursor: pointer;
+}
+
+/* Animated superhero image */
+.hero-img {
+  width: clamp(60px, 12vw, 120px);
+  margin-bottom: clamp(0.75rem, 1.5vw, 2rem);
+  animation: float-rotate 4s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes float-rotate {
+  0%   { transform: scale(1)   rotate(0deg); }
+  25%  { transform: scale(1.1) rotate(10deg); }
+  50%  { transform: scale(1)   rotate(0deg); }
+  75%  { transform: scale(1.1) rotate(-10deg); }
+  100% { transform: scale(1)   rotate(0deg); }
+}
+
+/* Heading */
+h1 {
+  margin-bottom: clamp(1rem, 2vw, 1.5rem);
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  color: #333;
+}
+
+/* Form group */
+.form-group {
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.form-group label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+/* Inputs */
+.form-control {
+  width: 100%;
+  font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+  padding: clamp(0.5rem, 1vw, 0.8rem);
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+}
+
+/* Checkbox group */
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Submit button */
+.btn-submit {
+  width: 100%;
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+  padding: clamp(0.6rem, 1vw, 1rem);
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+/* Small text/link */
+.small {
+  margin-top: 0.8rem;
+  font-size: 0.85rem;
+}
+
+.small a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+/* Modal overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Error modal content */
+.modal-content {
+  background: #fff0f0;
+  padding: clamp(1rem, 2vw, 1.5rem);
+  border-radius: 0.75rem;
+  border: 2px solid #e53935;
+  max-width: clamp(240px, 80%, 300px);
+  text-align: center;
+}
+
+.modal-content h3 {
+  color: #b71c1c;
+  margin-bottom: clamp(0.5rem, 1vw, 1rem);
+}
+
+.modal-content ul {
+  text-align: left;
+  margin-bottom: clamp(0.5rem, 1vw, 1rem);
+}
+
+.modal-content ul li {
+  color: #d32f2f;
+  margin-bottom: 0.5rem;
+}
+
+.modal-close {
+  padding: clamp(0.4rem, 1vw, 0.6rem) clamp(0.8rem, 2vw, 1rem);
+  border: none;
+  border-radius: 0.5rem;
+  background: #e53935;
+  color: white;
+  cursor: pointer;
+}
+
+/* Success modal overrides */
+.modal-content.success {
+  background: #e8f5e9;
+  border-color: #2e7d32;
+}
+
+.modal-content.success h3 {
+  color: #2e7d32;
+}
+
+.modal-close.success {
+  background: #2e7d32;
+}
+
+/* Responsive tweaks */
+@media (max-width: 400px) {
+  .page-container {
+    max-width: 90%;
+    padding: clamp(1rem, 5vw, 1.5rem);
+  }
+}
+
+@media (min-width: 1024px) {
+  .page-container {
+    width: 60%;
+  }
+}
