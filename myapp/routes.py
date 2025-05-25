@@ -64,3 +64,20 @@ def init_routes(app):
     @login_required
     def home():
         return render_template('home.html')
+
+    # ── New stub pages ──
+
+    @app.route('/game')
+    @login_required
+    def game():
+        return render_template('game.html')
+
+    @app.route('/settings')
+    @login_required
+    def settings():
+        return render_template('settings.html')
+
+    @app.route('/stats')
+    @login_required
+    def stats():
+        return render_template('stats.html')

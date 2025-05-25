@@ -36,6 +36,7 @@ body {
   position: relative;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   margin: 0 auto;
+  /* in HTML: <div class="page-container" role="main"> */
 }
 
 /* Back button (register only) */
@@ -89,6 +90,7 @@ h1 {
   padding: clamp(0.5rem, 1vw, 0.8rem);
   border: 1px solid #ccc;
   border-radius: 0.5rem;
+  transition: border-color 0.2s;
 }
 
 /* Checkbox group */
@@ -100,15 +102,17 @@ h1 {
 }
 
 /* Submit button */
+/* ➤ Changed background to #0056b3 for 7:1 contrast vs. white */
 .btn-submit {
   width: 100%;
   font-size: clamp(1rem, 1.5vw, 1.2rem);
   padding: clamp(0.6rem, 1vw, 1rem);
-  background: #007bff;
-  color: white;
+  background: #0056b3;
+  color: #ffffff;
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
+  transition: background 0.2s;
 }
 
 /* Small text/link */
@@ -118,8 +122,8 @@ h1 {
 }
 
 .small a {
-  color: #007bff;
-  text-decoration: none;
+  color: #0056b3;             /* darker blue for contrast */
+  text-decoration: underline; /* always underlined */
 }
 
 /* Modal overlay */
@@ -196,3 +200,55 @@ h1 {
     width: 60%;
   }
 }
+
+/* =========================
+   Accessibility Enhancements
+   ========================= */
+
+/* 1. Focus-visible for interactive elements */
+:focus-visible {
+  outline: none;
+}
+
+a:focus-visible,
+.btn-submit:focus-visible,
+.form-control:focus-visible,
+.btn-back:focus-visible,
+.modal-close:focus-visible {
+  outline: 3px solid #ffbf47;
+  outline-offset: 2px;
+}
+
+/* 2. Hover/active states */
+.btn-submit:hover,
+.btn-submit:active {
+  background: #003580;  /* slightly darker on hover */
+}
+
+.form-control:hover {
+  border-color: #0056b3;
+}
+
+/* icon inside text-fields */
+.form-control {
+  background-repeat: no-repeat;
+  background-position: 1rem center;
+  background-size: 1.2rem auto;
+  padding-left: 2.75rem; /* room for icon */
+}
+
+/* email icon */
+.form-control.icon-email {
+  background-image: url("/static/images/email.webp");
+}
+
+/* user/username icon */
+.form-control.icon-user {
+  background-image: url("/static/images/user.png");
+}
+
+/* password key icon */
+.form-control.icon-password {
+  background-image: url("/static/images/passwordkey.webp");
+}
+

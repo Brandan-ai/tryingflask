@@ -12,12 +12,13 @@
 
       <div class="form-group">
         {{ form.username.label }}
-        {{ form.username(class="form-control", placeholder="Your username") }}
+        {{ form.username(class="form-control icon-user", placeholder="Your username") }}
       </div>
       <div class="form-group">
         {{ form.password.label }}
-        {{ form.password(class="form-control", placeholder="Your password") }}
+        {{ form.password(class="form-control icon-password", placeholder="Your password") }}
       </div>
+
       <div class="form-group checkbox-group">
         {{ form.remember() }} <label for="remember">Stay signed in?</label>
       </div>

@@ -15,20 +15,21 @@
 
       <div class="form-group">
         {{ form.email.label }}
-        {{ form.email(class="form-control", placeholder="Enter your email") }}
+        {{ form.email(class="form-control icon-email", placeholder="Enter your email") }}
       </div>
       <div class="form-group">
         {{ form.username.label }}
-        {{ form.username(class="form-control", placeholder="Choose a username") }}
+        {{ form.username(class="form-control icon-user", placeholder="Choose a username") }}
       </div>
       <div class="form-group">
         {{ form.password.label }}
-        {{ form.password(class="form-control", placeholder="Create a password") }}
+        {{ form.password(class="form-control icon-password", placeholder="Create a password") }}
       </div>
       <div class="form-group">
         {{ form.confirm_password.label }}
-        {{ form.confirm_password(class="form-control", placeholder="Confirm your password") }}
+        {{ form.confirm_password(class="form-control icon-password", placeholder="Confirm your password") }}
       </div>
+
 
       <button type="submit" class="btn-submit">{{ form.submit.label.text }}</button>
     </form>

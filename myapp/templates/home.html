@@ -1,14 +1,41 @@
 {% extends "base.html" %}
-{% block title %}Home | Super-Maths{% endblock %}
+{% block title %}Super-Maths Home{% endblock %}
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+{% endblock %}
 
 {% block content %}
-  <div class="page-container">
-    <img src="{{ url_for('static', filename='images/superhero.png') }}"
-         alt="Superhero" class="hero-img">
-    <h1>Welcome, {{ current_user.username }}!</h1>
-    <p>You’re now on the home page.</p>
+<div class="home-container">
+  <div class="card">
+    <!-- hero + title -->
+    <div class="hero-title">
+      <img src="{{ url_for('static', filename='images/superhero.png') }}" alt="Hero">
+      <h1 class="home-title">Super-Maths</h1>
+      <img src="{{ url_for('static', filename='images/superhero.png') }}" alt="Hero">
+    </div>
 
-    <!-- simple logout link -->
-    <a href="{{ url_for('logout') }}" class="btn-submit">Log Out</a>
+    <!-- button column (no logout here) -->
+    <nav class="button-grid">
+      <a href="{{ url_for('game') }}" class="btn-home">
+        Play
+        <img src="{{ url_for('static', filename='images/game.png') }}" alt="" aria-hidden="true">
+      </a>
+      <a href="{{ url_for('settings') }}" class="btn-home">
+        Settings
+        <img src="{{ url_for('static', filename='images/settings.png') }}" alt="" aria-hidden="true">
+      </a>
+      <a href="{{ url_for('stats') }}" class="btn-home">
+        Statistics
+        <img src="{{ url_for('static', filename='images/stats.png') }}" alt="" aria-hidden="true">
+      </a>
+    </nav>
+
+    <a href="{{ url_for('logout') }}" class="btn-logout" aria-label="Logout">
+      <img src="{{ url_for('static', filename='images/logout.png') }}" alt="Logout">
+    </a>
   </div>
+
+  <!-- logout icon in bottom-right -->
+  
+</div>
 {% endblock %}

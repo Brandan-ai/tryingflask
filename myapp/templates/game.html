@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Game | Super-Maths{% endblock %}
+
+{% block content %}
+  <div class="page-container">
+    <img src="{{ url_for('static', filename='images/back-button.png') }}"
+         alt="Back" class="btn-back"
+         onclick="location.href='{{ url_for('home') }}'">
+    <h1>Game Page</h1>
+    <p>🎮 This is the Game page. Content coming soon!</p>
+  </div>
+{% endblock %}
