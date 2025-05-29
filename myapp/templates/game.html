@@ -1,12 +1,60 @@
+<!-- templates/game.html -->
 {% extends "base.html" %}
-{% block title %}Game | Super-Maths{% endblock %}
+{% block title %}Math Quiz{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/game.css') }}">
+  <script src="{{ url_for('static', filename='js/game.js') }}" defer></script>
+{% endblock %}
 
 {% block content %}
-  <div class="page-container">
-    <img src="{{ url_for('static', filename='images/back-button.png') }}"
-         alt="Back" class="btn-back"
-         onclick="location.href='{{ url_for('home') }}'">
-    <h1>Game Page</h1>
-    <p>🎮 This is the Game page. Content coming soon!</p>
+  <!-- SETUP: visible at load -->
+  <div id="setup">
+    <h2>Choose Level & Topic</h2>
+    <label>
+      Level:
+      <select id="level-select">
+        <option value="1">Level 1 (0–9)</option>
+        <option value="2">Level 2 (10–20)</option>
+      </select>
+    </label>
+    <label>
+      Topic:
+      <select id="topic-select">
+        <option value="addition">Addition</option>
+        <option value="subtraction">Subtraction</option>
+      </select>
+    </label>
+    <button id="start-btn">Start Quiz</button>
+  </div>
+
+  <!-- QUIZ: hidden until start -->
+  <div id="quiz" class="hidden">
+    <h3 id="question-text"></h3>
+    <div id="answers">
+      <div class="card" data-index="0"></div>
+      <div class="card" data-index="1"></div>
+      <div class="card" data-index="2"></div>
+      <div class="card" data-index="3"></div>
+    </div>
+
+    <!-- bottom bar: timer + exit -->
+    <div id="bottom-bar">
+      <div id="timer" aria-live="polite">Time: <span id="time">0.0</span>s</div>
+      <button id="exit-btn" title="Exit Quiz" aria-label="Exit Quiz"></button>
+    </div>
+  </div>
+
+  <!-- BACKDROP FOR MODAL -->
+  <div id="modal-backdrop" class="hidden"></div>
+
+  <!-- RESULT MODAL -->
+  <div id="result-modal" class="hidden" role="dialog" aria-modal="true" aria-labelledby="result-title">
+    <div class="modal-content">
+      <h2 id="result-title">Quiz Complete!</h2>
+      <p id="result-text"></p>
+      <button id="retry-btn" aria-label="Play Again">Play Again</button>
+      <button id="home-btn" aria-label="Go Home" data-home-url="{{ url_for('home') }}">Home</button>
+    </div>
   </div>
 {% endblock %}

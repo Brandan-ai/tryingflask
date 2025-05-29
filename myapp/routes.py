@@ -1,18 +1,17 @@
 # routes.py
 
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, jsonify
 from flask_login import login_user, logout_user, login_required, current_user
 from .forms import RegistrationForm, LoginForm
 from .extensions import db, login_manager
+from .models import User, Attempt
 
 def init_routes(app):
-    from .models import User  # Deferred import to avoid circular dependency
-
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(int(user_id))
 
-    # ── Suppress Flask-Login's default flash messages ──
+    # Suppress Flask-Login's default flashes
     login_manager.login_view = 'login'
     login_manager.login_message = None
     login_manager.needs_refresh_message = None
@@ -65,8 +64,6 @@ def init_routes(app):
     def home():
         return render_template('home.html')
 
-    # ── New stub pages ──
-
     @app.route('/game')
     @login_required
     def game():
@@ -81,3 +78,20 @@ def init_routes(app):
     @login_required
     def stats():
         return render_template('stats.html')
+
+    # ── New endpoint to receive and store quiz results ──
+    @app.route('/submit_results', methods=['POST'])
+    @login_required
+    def submit_results():
+        data = request.get_json()
+        attempt = Attempt(
+            user_id=current_user.id,
+            level=int(data['level']),
+            topic=data['topic'],
+            correct_count=int(data['correct_count']),
+            total_questions=int(data['total_questions']),
+            time_taken=float(data['time_taken'])
+        )
+        db.session.add(attempt)
+        db.session.commit()
+        return jsonify(success=True)
