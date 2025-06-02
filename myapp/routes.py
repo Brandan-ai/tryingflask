@@ -1,10 +1,13 @@
 # routes.py
 
-from flask import render_template, redirect, url_for, flash, request, jsonify
+from flask import render_template, redirect, url_for, flash, request, jsonify, Blueprint
 from flask_login import login_user, logout_user, login_required, current_user
 from .forms import RegistrationForm, LoginForm
 from .extensions import db, login_manager
 from .models import User, Attempt
+
+# • Define stats blueprint
+stats_bp = Blueprint('stats', __name__)
 
 def init_routes(app):
     @login_manager.user_loader
@@ -74,12 +77,6 @@ def init_routes(app):
     def settings():
         return render_template('settings.html')
 
-    @app.route('/stats')
-    @login_required
-    def stats():
-        return render_template('stats.html')
-
-    # ── New endpoint to receive and store quiz results ──
     @app.route('/submit_results', methods=['POST'])
     @login_required
     def submit_results():
@@ -95,3 +92,33 @@ def init_routes(app):
         db.session.add(attempt)
         db.session.commit()
         return jsonify(success=True)
+
+# • Stats routes attached to stats_bp
+@stats_bp.route('/stats',endpoint='stats')
+@login_required
+def stats_page():
+    return render_template('stats.html')
+
+@stats_bp.route('/stats_data', methods=['GET'])
+@login_required
+def stats_data():
+    level = request.args.get('level', type=int)
+    metric = request.args.get('metric', type=str)
+    attempts = (
+        Attempt.query
+        .filter_by(user_id=current_user.id, level=level)
+        .order_by(Attempt.timestamp)
+        .all()
+    )
+    timestamps = []
+    values = []
+    for a in attempts:
+        timestamps.append(a.timestamp.strftime('%Y-%m-%d %H:%M:%S'))
+        if metric == 'accuracy':
+            values.append(round((a.correct_count / a.total_questions) * 100, 2))
+        else:
+            values.append(round(a.time_taken, 2))
+    return jsonify({'timestamps': timestamps, 'values': values})
+
+# • Expose init_routes and stats_bp
+__all__ = ['init_routes', 'stats_bp']

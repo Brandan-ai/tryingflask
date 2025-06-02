@@ -24,7 +24,7 @@
         Settings
         <img src="{{ url_for('static', filename='images/settings.png') }}" alt="" aria-hidden="true">
       </a>
-      <a href="{{ url_for('stats') }}" class="btn-home">
+      <a href="{{ url_for('stats.stats') }}" class="btn-home">
         Statistics
         <img src="{{ url_for('static', filename='images/stats.png') }}" alt="" aria-hidden="true">
       </a>
@@ -34,8 +34,5 @@
       <img src="{{ url_for('static', filename='images/logout.png') }}" alt="Logout">
     </a>
   </div>
-
-  <!-- logout icon in bottom-right -->
-  
 </div>
 {% endblock %}

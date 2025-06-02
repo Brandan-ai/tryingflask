@@ -1,12 +1,43 @@
-{% extends "base.html" %}
-{% block title %}Statistics | Super-Maths{% endblock %}
+{% extends 'base.html' %}
+
+{% block title %}Statistics{% endblock %}
+
+{% block head %}
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Stats CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/stats.css') }}">
+{% endblock %}
 
 {% block content %}
-  <div class="page-container">
-    <img src="{{ url_for('static', filename='images/back-button.png') }}"
-         alt="Back" class="btn-back"
-         onclick="location.href='{{ url_for('home') }}'">
-    <h1>Statistics Page</h1>
-    <p>📊 This is the Statistics page. Content coming soon!</p>
+  <div class="stats-container">
+    <div class="stats-controls">
+      <label for="levelSelect">Select Level:</label>
+      <select id="levelSelect">
+        <option value="" disabled selected>Choose level</option>
+        {% for lvl in range(1, 11) %}
+          <option value="{{ lvl }}">Level {{ lvl }}</option>
+        {% endfor %}
+      </select>
+
+      <label for="metricSelect">Select Metric:</label>
+      <select id="metricSelect">
+        <option value="" disabled selected>Choose metric</option>
+        <option value="accuracy">Accuracy Over Time</option>
+        <option value="speed">Speed Over Time</option>
+      </select>
+
+      <button id="showStatsBtn">Show Chart</button>
+    </div>
+
+    <div id="statsModal" class="modal-overlay">
+      <div class="modal-content">
+        <button class="modal-close" id="closeModalBtn">&times;</button>
+        <canvas id="statsChart"></canvas>
+      </div>
+    </div>
   </div>
+
+  <!-- Link to the external JS file -->
+  <script src="{{ url_for('static', filename='js/stats.js') }}"></script>
 {% endblock %}
