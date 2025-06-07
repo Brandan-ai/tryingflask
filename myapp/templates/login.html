@@ -23,19 +23,20 @@
         {{ form.remember() }} <label for="remember">Stay signed in?</label>
       </div>
 
-      <button type="submit" class="btn-submit">{{ form.submit.label.text }}</button>
+      <!-- submit button now has play-ui-sfx -->
+      <button type="submit" class="btn-submit play-ui-sfx">{{ form.submit.label.text }}</button>
       <p class="small"><a href="{{ url_for('register') }}">Register</a></p>
     </form>
   </div>
 
-  <!-- Error Modal -->
-  {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
+  {# Only show error messages here; ignore any 'success' flashes #}
+  {% with errors = get_flashed_messages(category_filter=['error']) %}
+    {% if errors %}
       <div id="error-modal" class="modal-overlay">
         <div class="modal-content">
           <h3>Error</h3>
           <ul>
-            {% for category, msg in messages %}
+            {% for msg in errors %}
               <li>{{ msg }}</li>
             {% endfor %}
           </ul>

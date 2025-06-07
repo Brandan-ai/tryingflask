@@ -25,7 +25,15 @@
         <option value="subtraction">Subtraction</option>
       </select>
     </label>
-    <button id="start-btn">Start Quiz</button>
+    <!-- start button now plays UI sound via class -->
+    <button id="start-btn" class="play-ui-sfx">Start Quiz</button>
+
+    <!-- BACK BUTTON INSIDE SETUP CARD -->
+    <div class="back-btn-container">
+      <a href="{{ url_for('home') }}">
+        <img src="{{ url_for('static', filename='images/back-button.png') }}" alt="Back">
+      </a>
+    </div>
   </div>
 
   <!-- QUIZ: hidden until start -->
@@ -38,10 +46,15 @@
       <div class="card" data-index="3"></div>
     </div>
 
-    <!-- bottom bar: timer + exit -->
+    <!-- bottom bar: timer + inline back -->
     <div id="bottom-bar">
       <div id="timer" aria-live="polite">Time: <span id="time">0.0</span>s</div>
-      <button id="exit-btn" title="Exit Quiz" aria-label="Exit Quiz"></button>
+      <!-- BACK BUTTON INLINE WITH TIMER -->
+      <div class="back-btn-inline">
+        <a href="{{ url_for('home') }}">
+          <img src="{{ url_for('static', filename='images/back-button.png') }}" alt="Back">
+        </a>
+      </div>
     </div>
   </div>
 
@@ -53,8 +66,9 @@
     <div class="modal-content">
       <h2 id="result-title">Quiz Complete!</h2>
       <p id="result-text"></p>
-      <button id="retry-btn" aria-label="Play Again">Play Again</button>
-      <button id="home-btn" aria-label="Go Home" data-home-url="{{ url_for('home') }}">Home</button>
+      <!-- retry & home buttons now play UI sound via class -->
+      <button id="retry-btn" class="play-ui-sfx" aria-label="Play Again">Play Again</button>
+      <button id="home-btn" class="play-ui-sfx" aria-label="Go Home" data-home-url="{{ url_for('home') }}">Home</button>
     </div>
   </div>
 {% endblock %}

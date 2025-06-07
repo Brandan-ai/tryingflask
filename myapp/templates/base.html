@@ -4,6 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{% endblock %}</title>
+    <script>
+      // on page load, apply saved text-size
+      document.addEventListener('DOMContentLoaded', () => {
+        const txt = localStorage.getItem('user_text_size');
+        if (txt) document.documentElement.style.fontSize = txt + '%';
+      });
+    </script>
+
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     {% block head %}{% endblock %}
   </head>
@@ -11,5 +19,8 @@
     <div class="wrapper">
       {% block content %}{% endblock %}
     </div>
+
+    <!-- Include the shared UI-SFX logic on every page -->
+    <script src="{{ url_for('static', filename='js/ui-sfx.js') }}"></script>
   </body>
 </html>

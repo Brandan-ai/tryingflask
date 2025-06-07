@@ -1,4 +1,4 @@
-/* game.css */
+/* static/css/game.css */
 
 /* Layout Overrides */
 .wrapper {
@@ -58,6 +58,7 @@ button {
 
 /* Setup Screen */
 #setup {
+  position: relative;          /* allow back button to be aligned via flex */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -65,6 +66,9 @@ button {
   gap: 2.5rem;
   height: 100vh;
   padding: 2rem;
+  max-width: 600px;            /* constrain width */
+  width: 100%;
+  margin: 0 auto;              /* center card */
 }
 #setup h2 {
   font-size: 3.5rem;
@@ -74,7 +78,6 @@ button {
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 600px;
   font-size: 2.4rem;
 }
 #setup select {
@@ -99,6 +102,21 @@ button {
 #start-btn:focus {
   background: #1565c0;
   outline: 3px solid #ffc107;
+}
+
+/* Back-button inside SETUP */
+#setup .back-btn-container {
+  align-self: flex-end;         /* align right edge with dropdowns */
+  margin-top: 1rem;             /* moved closer to start button */
+  width: clamp(2.5rem, 4vw, 3rem); /* slightly smaller */
+  height: auto;
+  cursor: pointer;
+  z-index: 10;
+}
+#setup .back-btn-container img {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 /* Quiz Screen */
@@ -149,6 +167,33 @@ button {
 .card.wrong {
   background: #ffcdd2 !important;
   border-color: #c62828 !important;
+}
+
+/* Bottom Bar (Timer + Inline Back) */
+#bottom-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  height: 5rem;
+  background: #eceff1;
+  border-top: 2px solid #b0bec5;
+}
+#timer {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #1565c0;
+}
+/* Inline back button in bottom bar */
+.back-btn-inline {
+  width: clamp(3rem, 5vw, 4rem);
+  height: auto;
+  cursor: pointer;
+}
+.back-btn-inline img {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 /* Result Modal */
@@ -229,23 +274,6 @@ button {
   background-size: 1.5rem;
 }
 
-/* Bottom Bar */
-#bottom-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  height: 5rem;
-  background: #eceff1;
-  border-top: 2px solid #b0bec5;
-}
-
-#timer {
-  font-size: 2.5rem;
-  font-weight: bold;
-  color: #1565c0;
-}
-
 /* Responsive Tweaks */
 @media (min-width: 768px) {
   #setup h2 { font-size: 4rem; }
@@ -262,4 +290,15 @@ button {
   #result-modal p { font-size: 2.8rem; }
   #result-modal button { font-size: 2.8rem; padding: 1.5rem 3rem; max-width: 350px; }
   #result-modal button { background-size: 2.2rem; }
+
+  /* Increase inline back-button on larger screens */
+  .back-btn-inline {
+    width: clamp(4rem, 4vw, 5rem);
+  }
+
+  /* Slightly increase setup back-button on larger screens */
+  #setup .back-btn-container {
+    width: clamp(3rem, 4vw, 3.5rem);
+    margin-top: 1.5rem;
+  }
 }

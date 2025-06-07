@@ -1,0 +1,142 @@
+/* settings.css */
+/* Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  font-family: "Segoe UI", sans-serif;
+  background: #f0f4f8;
+  color: #222;
+}
+
+/* Wrapper */
+.settings-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+/* Card */
+.settings-controls {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 2rem;
+  width: 100%;
+  max-width: 600px;
+  background: #ffffff;
+  padding: 3rem;
+  padding-bottom: clamp(8rem, 20vw, 10rem); /* space for back button */
+  border-radius: 1rem;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  text-align: center;
+}
+
+/* Title */
+.settings-title {
+  font-size: 2.8rem;
+  color: #0056b3;
+  margin-bottom: 1rem;
+}
+
+/* Slider groups */
+.slider-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.slider-group label {
+  font-size: 2.2rem;
+  margin-bottom: 0.5rem;
+  text-align: left;
+}
+
+.slider-group input[type="range"] {
+  width: 100%;
+  height: 1.5rem;
+  -webkit-appearance: none;
+}
+
+.slider-group input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: #0056b3;
+  cursor: pointer;
+}
+
+.slider-group input[type="range"]::-webkit-slider-runnable-track {
+  height: 0.5rem;
+  background: #78909c;
+  border-radius: 0.25rem;
+}
+
+/* Save button */
+#save-btn {
+  padding: 1.75rem 3.5rem;
+  font-size: 2.2rem;
+  background: #0056b3;
+  color: white;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#save-btn:hover,
+#save-btn:focus {
+  background: #1565c0;
+  outline: 3px solid #ffc107;
+}
+
+/* Back button */
+.back-btn-container {
+  position: absolute;
+  bottom: clamp(2rem, 4vw, 2.5rem);
+  right: clamp(1rem, 3vw, 2rem);
+  width: clamp(2rem, 4vw, 2.5rem);
+  height: clamp(2rem, 4vw, 2.5rem);
+  z-index: 10;
+}
+
+.back-btn-container img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Status message */
+#status-msg {
+  font-size: 1.8rem;
+  color: #0056b3;
+  min-height: 2.5rem;
+}
+
+/* Responsive tweaks */
+@media (min-width: 768px) {
+  .settings-title {
+    font-size: 3.2rem;
+  }
+  .slider-group label {
+    font-size: 2.6rem;
+  }
+  #save-btn {
+    font-size: 2.4rem;
+    padding: 2rem 4rem;
+  }
+  .back-btn-container {
+    width: clamp(2.5rem, 3vw, 3rem);
+    height: clamp(2.5rem, 3vw, 3rem);
+  }
+}

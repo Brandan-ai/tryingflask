@@ -1,5 +1,88 @@
 /* static/css/stats.css */
 
+/* Reset and base */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  font-family: "Segoe UI", sans-serif;
+  background: #f0f4f8;
+  color: #222;
+}
+
+/* Page wrapper to center content */
+.stats-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding: 2rem;
+}
+
+/* Centered card-style form */
+.stats-controls {
+  position: relative;           /* allow absolute positioning of back button */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+  width: 100%;
+  max-width: 600px;
+  background: #ffffff;
+  padding: 3rem;
+  padding-bottom: clamp(8rem, 20vw, 10rem); /* leave room for back button */
+  border-radius: 1rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+
+/* Group for label + select */
+.select-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Label styling */
+.select-group label {
+  font-size: 2.4rem;
+  color: #0056b3;
+  margin-bottom: 0.75rem;
+}
+
+/* Dropdowns */
+.select-group select {
+  padding: 1.25rem;
+  font-size: 2rem;
+  border: 2px solid #78909c;
+  border-radius: 0.5rem;
+  background: #fff;
+}
+
+/* Show Chart Button */
+.stats-controls button {
+  padding: 1.75rem 3.5rem;
+  font-size: 2.2rem;
+  background: #0056b3;
+  color: white;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.stats-controls button:hover,
+.stats-controls button:focus {
+  background: #1565c0;
+  outline: 3px solid #ffc107;
+}
+
 /* Modal overlay */
 .modal-overlay {
   position: fixed;
@@ -8,13 +91,13 @@
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
-  display: none; /* hidden by default */
+  display: none;
   align-items: center;
   justify-content: center;
   z-index: 1000;
 }
 
-/* Modal content container */
+/* Modal content */
 .modal-content {
   background: #fff;
   border-radius: 8px;
@@ -27,7 +110,7 @@
   flex-direction: column;
 }
 
-/* Close button */
+/* Modal close button */
 .modal-close {
   position: absolute;
   top: 0.5rem;
@@ -39,20 +122,81 @@
   z-index: 10;
 }
 
-/* Dropdowns and button wrapper */
-.stats-controls {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-/* Ensure chart container flexes */
+/* Chart fills modal */
 .modal-content canvas {
   flex: 1;
 }
 
-/* Make sure canvas fills available space */
 #statsChart {
   width: 100% !important;
   height: 100% !important;
+}
+
+/* Back-button scoped inside .stats-controls */
+.stats-controls .back-btn-container {
+  position: absolute;
+  bottom: clamp(2rem, 4vw, 2.5rem);
+  right: clamp(1rem, 3vw, 2rem);
+  width: clamp(2rem, 4vw, 2.5rem);
+  height: clamp(2rem, 4vw, 2.5rem);
+  z-index: 10;
+  cursor: pointer;
+}
+.stats-controls .back-btn-container img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+  .select-group label {
+    font-size: 2.6rem;
+  }
+
+  .select-group select {
+    font-size: 2.2rem;
+    padding: 1.5rem;
+  }
+
+  .stats-controls button {
+    font-size: 2.4rem;
+    padding: 2rem 4rem;
+  }
+
+  /* Slightly increase back-button on larger screens */
+  .stats-controls .back-btn-container {
+    width: clamp(2.5rem, 3vw, 3rem);
+    height: clamp(2.5rem, 3vw, 3rem);
+  }
+}
+
+/* Error Modal Styles (added) */
+.modal-content.error {
+  max-width: 400px;
+  padding: 2rem;
+  text-align: center;
+}
+.modal-content.error h2 {
+  font-size: 2.4rem;
+  margin-bottom: 1rem;
+  color: #b00020;
+}
+.modal-content.error p {
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+}
+.modal-content.error .modal-close {
+  top: 1rem;
+  right: 1rem;
+  font-size: 2rem;
+}
+
+/* Visually-hidden helper (added) */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(1px,1px,1px,1px);
 }

@@ -1,12 +1,54 @@
-{% extends "base.html" %}
-{% block title %}Settings | Super-Maths{% endblock %}
+{% extends 'base.html' %}
+
+{% block title %}Settings{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/settings.css') }}">
+  <script src="{{ url_for('static', filename='js/settings.js') }}" defer></script>
+{% endblock %}
 
 {% block content %}
-  <div class="page-container">
-    <img src="{{ url_for('static', filename='images/back-button.png') }}"
-         alt="Back" class="btn-back"
-         onclick="location.href='{{ url_for('home') }}'">
-    <h1>Settings Page</h1>
-    <p>⚙️ This is the Settings page. Content coming soon!</p>
+<div class="settings-container">
+  <div class="settings-controls">
+    <h2 class="settings-title">Settings</h2>
+
+    <div class="slider-group">
+      <label for="volume-slider">
+        Volume: <span id="volume-label">{{ volume }}%</span>
+      </label>
+      <input type="range"
+             id="volume-slider"
+             min="0" max="100"
+             value="{{ volume }}"
+             aria-valuemin="0"
+             aria-valuemax="100"
+             aria-valuenow="{{ volume }}"
+             aria-label="Volume control">
+    </div>
+
+    <div class="slider-group">
+      <label for="text-slider">
+        Text Size: <span id="text-label">{{ text_size }}%</span>
+      </label>
+      <input type="range"
+             id="text-slider"
+             min="50" max="200"
+             value="{{ text_size }}"
+             aria-valuemin="50"
+             aria-valuemax="200"
+             aria-valuenow="{{ text_size }}"
+             aria-label="Text size control">
+    </div>
+
+    <button id="save-btn" class="play-ui-sfx">Save Settings</button>
+
+    <div class="back-btn-container">
+      <a href="{{ url_for('home') }}" aria-label="Go back to Home">
+        <img src="{{ url_for('static', filename='images/back-button.png') }}" alt="Back">
+      </a>
+    </div>
+
+    <div id="status-msg" role="status" aria-live="polite"></div>
   </div>
+</div>
 {% endblock %}

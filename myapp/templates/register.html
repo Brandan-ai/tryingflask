@@ -30,51 +30,57 @@
         {{ form.confirm_password(class="form-control icon-password", placeholder="Confirm your password") }}
       </div>
 
-
-      <button type="submit" class="btn-submit">{{ form.submit.label.text }}</button>
+      <!-- submit button now has play-ui-sfx -->
+      <button type="submit" class="btn-submit play-ui-sfx">{{ form.submit.label.text }}</button>
     </form>
   </div>
 
-  {# Success Modal (green) #}
-  {% with msgs = get_flashed_messages(category_filter=['success']) %}
-    {% if msgs %}
-      <div id="success-modal" class="modal-overlay">
-        <div class="modal-content success">
-          <h3>Welcome Aboard!</h3>
-          <p>{{ msgs[0] }}</p>
-          <button class="modal-close success" onclick="closeSuccess()">Let’s Get Started</button>
-        </div>
-      </div>
-      <script>
-        function closeSuccess() {
-          document.getElementById('success-modal').style.display = 'none';
-          window.location.href = "{{ url_for('login') }}";
-        }
-        document.getElementById('success-modal').style.display = 'flex';
-      </script>
+  {# Gather all flashed messages with categories #}
+  {% set success_msgs = [] %}
+  {% set error_msgs = [] %}
+  {% for category, message in get_flashed_messages(with_categories=true) %}
+    {% if category == 'success' %}
+      {% set _ = success_msgs.append(message) %}
+    {% elif category == 'error' %}
+      {% set _ = error_msgs.append(message) %}
     {% endif %}
-  {% endwith %}
+  {% endfor %}
 
-  {# Error Modal (red) #}
-  {% with errs = get_flashed_messages(category_filter=['error']) %}
-    {% if errs %}
-      <div id="error-modal" class="modal-overlay">
-        <div class="modal-content">
-          <h3>Error</h3>
-          <ul>
-            {% for m in errs %}
-              <li>{{ m }}</li>
-            {% endfor %}
-          </ul>
-          <button class="modal-close" onclick="closeError()">OK</button>
-        </div>
+  {# If there's a success, show only the success modal #}
+  {% if success_msgs %}
+    <div id="success-modal" class="modal-overlay">
+      <div class="modal-content success">
+        <h3>Welcome Aboard!</h3>
+        <p>{{ success_msgs[0] }}</p>
+        <button class="modal-close success" onclick="closeSuccess()">Let’s Get Started</button>
       </div>
-      <script>
-        function closeError() {
-          document.getElementById('error-modal').style.display = 'none';
-        }
-        document.getElementById('error-modal').style.display = 'flex';
-      </script>
-    {% endif %}
-  {% endwith %}
+    </div>
+    <script>
+      function closeSuccess() {
+        document.getElementById('success-modal').style.display = 'none';
+        window.location.href = "{{ url_for('login') }}";
+      }
+      document.getElementById('success-modal').style.display = 'flex';
+    </script>
+
+  {# Only if no success, but errors exist, show the error modal #}
+  {% elif error_msgs %}
+    <div id="error-modal" class="modal-overlay">
+      <div class="modal-content">
+        <h3>Error</h3>
+        <ul>
+          {% for m in error_msgs %}
+            <li>{{ m }}</li>
+          {% endfor %}
+        </ul>
+        <button class="modal-close" onclick="closeError()">OK</button>
+      </div>
+    </div>
+    <script>
+      function closeError() {
+        document.getElementById('error-modal').style.display = 'none';
+      }
+      document.getElementById('error-modal').style.display = 'flex';
+    </script>
+  {% endif %}
 {% endblock %}

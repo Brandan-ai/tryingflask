@@ -72,11 +72,6 @@ def init_routes(app):
     def game():
         return render_template('game.html')
 
-    @app.route('/settings')
-    @login_required
-    def settings():
-        return render_template('settings.html')
-
     @app.route('/submit_results', methods=['POST'])
     @login_required
     def submit_results():
@@ -90,6 +85,26 @@ def init_routes(app):
             time_taken=float(data['time_taken'])
         )
         db.session.add(attempt)
+        db.session.commit()
+        return jsonify(success=True)
+    
+    @app.route('/settings')
+    @login_required
+    def settings():
+        # pass current prefs to template
+        return render_template('settings.html',
+                               volume=current_user.volume,
+                               text_size=current_user.text_size)
+
+    @app.route('/update_settings', methods=['POST'])
+    @login_required
+    def update_settings():
+        data = request.get_json()
+        vol = int(data.get('volume', 100))
+        txt = int(data.get('text_size', 100))
+        # clamp values
+        current_user.volume = max(0, min(100, vol))
+        current_user.text_size = max(50, min(500, txt))
         db.session.commit()
         return jsonify(success=True)
 

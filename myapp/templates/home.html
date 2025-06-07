@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Super-Maths Home{% endblock %}
+
 {% block head %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
 {% endblock %}
@@ -16,21 +17,23 @@
 
     <!-- button column (no logout here) -->
     <nav class="button-grid">
-      <a href="{{ url_for('game') }}" class="btn-home">
+      <!-- each link now has play-ui-sfx -->
+      <a href="{{ url_for('game') }}" class="btn-home play-ui-sfx">
         Play
         <img src="{{ url_for('static', filename='images/game.png') }}" alt="" aria-hidden="true">
       </a>
-      <a href="{{ url_for('settings') }}" class="btn-home">
+      <a href="{{ url_for('settings') }}" class="btn-home play-ui-sfx">
         Settings
         <img src="{{ url_for('static', filename='images/settings.png') }}" alt="" aria-hidden="true">
       </a>
-      <a href="{{ url_for('stats.stats') }}" class="btn-home">
+      <a href="{{ url_for('stats.stats') }}" class="btn-home play-ui-sfx">
         Statistics
         <img src="{{ url_for('static', filename='images/stats.png') }}" alt="" aria-hidden="true">
       </a>
     </nav>
 
-    <a href="{{ url_for('logout') }}" class="btn-logout" aria-label="Logout">
+    <!-- logout link also plays UI sound -->
+    <a href="{{ url_for('logout') }}" class="btn-logout play-ui-sfx" aria-label="Logout">
       <img src="{{ url_for('static', filename='images/logout.png') }}" alt="Logout">
     </a>
   </div>
