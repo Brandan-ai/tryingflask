@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Reset Password | Super‑Maths{% endblock %}
+{% block content %}
+  <div class="page-container">
+    <h1>Reset Your Password</h1>
+    <form method="POST" novalidate>
+      {{ form.hidden_tag() }}
+      <div class="form-group">
+        {{ form.email.label }}
+        {{ form.email(class="form-control icon-email", placeholder="Your email") }}
+      </div>
+      <button type="submit" class="btn-submit play-ui-sfx">
+        {{ form.submit.label.text }}
+      </button>
+    </form>
+  </div>
+{% endblock %}

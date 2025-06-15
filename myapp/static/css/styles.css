@@ -252,3 +252,42 @@ a:focus-visible,
   background-image: url("/static/images/passwordkey.webp");
 }
 
+.password-rules small {
+  display: block;
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.password-strength {
+  height: 6px;
+  width: 100%;
+  background: #eee;
+  border-radius: 5px;
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+#strength-bar {
+  height: 100%;
+  width: 0%;
+  background: red;
+  transition: width 0.3s ease;
+  border-radius: 5px;
+}
+
+.strength-1 #strength-bar { background: #d32f2f; }
+.strength-2 #strength-bar { background: #f57c00; }
+.strength-3 #strength-bar { background: #fbc02d; }
+.strength-4 #strength-bar { background: #388e3c; }
+.strength-5 #strength-bar { background: #2e7d32; }
+
+#strength-text {
+  font-size: 0.8rem;
+  margin-top: 0.3rem;
+  margin-bottom: 0.5rem;
+  color: #444;
+  display: block;
+  text-align: left;
+}
+

@@ -20,26 +20,28 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function applyTextSize(t) {
-    document.documentElement.style.fontSize = `${t}%`;
+    // apply to root so it affects all rem-based text
+    document.documentElement.style.fontSize = t + '%';
     txtLabel.textContent = `${t}%`;
   }
 
-  // initialize from sliders / localStorage
+  // init from localStorage or defaults
   const initVol = localStorage.getItem('user_volume') ?? volSlider.value;
   const initTxt = localStorage.getItem('user_text_size') ?? txtSlider.value;
   volSlider.value = initVol;
   txtSlider.value = initTxt;
+
   applyVolume(initVol);
   applyTextSize(initTxt);
 
-  // live update & persist
+  // live-update & persist
   volSlider.addEventListener('input', () => {
-    const v = volSlider.value;
+    const v = Math.max(0, Math.min(100, volSlider.value));
     applyVolume(v);
     localStorage.setItem('user_volume', v);
   });
   txtSlider.addEventListener('input', () => {
-    const t = txtSlider.value;
+    const t = Math.max(50, Math.min(200, txtSlider.value));
     applyTextSize(t);
     localStorage.setItem('user_text_size', t);
   });

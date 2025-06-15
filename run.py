@@ -1,8 +1,6 @@
-# Entry point of the Flask app
-from myapp import create_app  # Imports the factory function to create the app
+from myapp import create_app  # adjust 'myapp' if your folder is named differently
 
-app = create_app()  # Creates the Flask app with configurations and blueprints
+app = create_app()
 
 if __name__ == "__main__":
-    # Runs the app in debug mode for live reloads and detailed errors
     app.run(debug=True)

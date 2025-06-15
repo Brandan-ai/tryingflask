@@ -23,19 +23,27 @@
       </div>
       <div class="form-group">
         {{ form.password.label }}
-        {{ form.password(class="form-control icon-password", placeholder="Create a password") }}
+        {{ form.password(class="form-control icon-password", id="password", placeholder="Create a password") }}
       </div>
+
+      <!-- Password strength and rules -->
+      <div class="password-rules">
+        <small>Password must be 8–30 characters and include uppercase, lowercase, number, and special character.</small>
+      </div>
+      <div class="password-strength">
+        <div id="strength-bar"></div>
+        <span id="strength-text"></span>
+      </div>
+
       <div class="form-group">
         {{ form.confirm_password.label }}
         {{ form.confirm_password(class="form-control icon-password", placeholder="Confirm your password") }}
       </div>
 
-      <!-- submit button now has play-ui-sfx -->
       <button type="submit" class="btn-submit play-ui-sfx">{{ form.submit.label.text }}</button>
     </form>
   </div>
 
-  {# Gather all flashed messages with categories #}
   {% set success_msgs = [] %}
   {% set error_msgs = [] %}
   {% for category, message in get_flashed_messages(with_categories=true) %}
@@ -46,7 +54,6 @@
     {% endif %}
   {% endfor %}
 
-  {# If there's a success, show only the success modal #}
   {% if success_msgs %}
     <div id="success-modal" class="modal-overlay">
       <div class="modal-content success">
@@ -62,8 +69,6 @@
       }
       document.getElementById('success-modal').style.display = 'flex';
     </script>
-
-  {# Only if no success, but errors exist, show the error modal #}
   {% elif error_msgs %}
     <div id="error-modal" class="modal-overlay">
       <div class="modal-content">
@@ -83,4 +88,27 @@
       document.getElementById('error-modal').style.display = 'flex';
     </script>
   {% endif %}
+
+  <!-- Password strength script -->
+  <script>
+    const passwordInput = document.querySelector('#password');
+    const strengthBar = document.getElementById('strength-bar');
+    const strengthText = document.getElementById('strength-text');
+
+    passwordInput?.addEventListener('input', () => {
+      const value = passwordInput.value;
+      let strength = 0;
+
+      if (value.length >= 8) strength++;
+      if (/[A-Z]/.test(value)) strength++;
+      if (/[a-z]/.test(value)) strength++;
+      if (/[0-9]/.test(value)) strength++;
+      if (/[\W_]/.test(value)) strength++;
+
+      const levels = ['Too Weak', 'Weak', 'Moderate', 'Strong', 'Very Strong'];
+      strengthBar.style.width = `${(strength / 5) * 100}%`;
+      strengthBar.parentElement.className = 'password-strength strength-' + strength;
+      strengthText.textContent = levels[strength - 1] || '';
+    });
+  </script>
 {% endblock %}

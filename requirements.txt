@@ -5,3 +5,5 @@ Flask-WTF
 Flask-Bcrypt
 Flask-Login
 email-validator
+Flask-Mail
+aiosmtpd
