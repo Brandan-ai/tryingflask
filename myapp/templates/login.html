@@ -2,55 +2,75 @@
 {% block title %}Login | Super-Maths{% endblock %}
 
 {% block content %}
-  <div class="page-container">
-      <img src="{{ url_for('static', filename='images/superhero.png') }}"
-               alt="Superhero" class="hero-img">
+<div class="page-container">
+  <img
+    src="{{ url_for('static', filename='images/superhero.png') }}"
+    alt="Superhero"
+    class="hero-img"
+  >
 
-                   <h1>Super-Maths Log-In</h1>
-                       <form method="POST" novalidate>
-                             {{ form.hidden_tag() }}
+  <h1>Super-Maths</h1>
+  <form method="POST" novalidate>
+    {{ form.hidden_tag() }}
 
-                                   <div class="form-group">
-                                           {{ form.username.label }}
-                                                   {{ form.username(class="form-control icon-user", placeholder="Your username") }}
-                                                         </div>
-                                                               <div class="form-group">
-                                                                       {{ form.password.label }}
-                                                                               {{ form.password(class="form-control icon-password", placeholder="Your password") }}
-                                                                                     </div>
+    <div class="form-group">
+      {{ form.username.label }}
+      {{ form.username(
+           class="form-control icon-user",
+           placeholder="Your username"
+         ) }}
+    </div>
 
-                                                                                           <div class="form-group checkbox-group">
-                                                                                                   {{ form.remember() }} <label for="remember">Stay signed in?</label>
-                                                                                                         </div>
+    <div class="form-group">
+      {{ form.password.label }}
+      {{ form.password(
+           class="form-control icon-password",
+           placeholder="Your password"
+         ) }}
+    </div>
 
-                                                                                                               <!-- submit button now has play-ui-sfx -->
-                                                                                                                     <button type="submit" class="btn-submit play-ui-sfx">{{ form.submit.label.text }}</button>
-                                                                                                                           <p class="small"><a href="{{ url_for('reset_request') }}">Forgot your password?</a></p>
-                                                                                                                                 <p class="small"><a href="{{ url_for('register') }}">Register</a></p>
-                                                                                                                                     </form>
-                                                                                                                                       </div>
+    <div class="form-group checkbox-group">
+      {{ form.remember() }}
+      <label for="remember">Stay signed in?</label>
+    </div>
 
-                                                                                                                                         {# Only show error messages here; ignore any 'success' flashes #}
-                                                                                                                                           {% with errors = get_flashed_messages(category_filter=['error']) %}
-                                                                                                                                               {% if errors %}
-                                                                                                                                                     <div id="error-modal" class="modal-overlay">
-                                                                                                                                                             <div class="modal-content">
-                                                                                                                                                                       <h3>Error</h3>
-                                                                                                                                                                                 <ul>
-                                                                                                                                                                                             {% for msg in errors %}
-                                                                                                                                                                                                           <li>{{ msg }}</li>
-                                                                                                                                                                                                                       {% endfor %}
-                                                                                                                                                                                                                                 </ul>
-                                                                                                                                                                                                                                           <button class="modal-close" onclick="closeModal()">OK</button>
-                                                                                                                                                                                                                                                   </div>
-                                                                                                                                                                                                                                                         </div>
-                                                                                                                                                                                                                                                               <script>
-                                                                                                                                                                                                                                                                       function closeModal() {
-                                                                                                                                                                                                                                                                                 document.getElementById('error-modal').style.display = 'none';
-                                                                                                                                                                                                                                                                                         }
-                                                                                                                                                                                                                                                                                                 document.getElementById('error-modal').style.display = 'flex';
-                                                                                                                                                                                                                                                                                                       </script>
-                                                                                                                                                                                                                                                                                                           {% endif %}
-                                                                                                                                                                                                                                                                                                             {% endwith %}
-                                                                                                                                                                                                                                                                                                             {% endblock %}
-                                                                                                                                                                                                                                                                                                             
+    <button type="submit" class="btn-submit play-ui-sfx">
+      {{ form.submit.label.text }}
+    </button>
+
+    <p class="small">
+      <a href="{{ url_for('reset_request') }}">
+        Forgot your password?
+      </a>
+    </p>
+    <p class="small">
+      <a href="{{ url_for('register') }}">
+        Register
+      </a>
+    </p>
+  </form>
+</div>
+
+{# Only show error messages here; ignore any 'success' flashes #}
+{% with errors = get_flashed_messages(category_filter=['error']) %}
+  {% if errors %}
+    <div id="error-modal" class="modal-overlay">
+      <div class="modal-content">
+        <h3>Error</h3>
+        <ul>
+          {% for msg in errors %}
+            <li>{{ msg }}</li>
+          {% endfor %}
+        </ul>
+        <button class="modal-close" onclick="closeModal()">OK</button>
+      </div>
+    </div>
+    <script>
+      function closeModal() {
+        document.getElementById('error-modal').style.display = 'none';
+      }
+      document.getElementById('error-modal').style.display = 'flex';
+    </script>
+  {% endif %}
+{% endwith %}
+{% endblock %}

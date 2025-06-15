@@ -1,3 +1,5 @@
+# myapp/routes.py
+
 from flask import (
     render_template, redirect, url_for, flash,
     request, jsonify, Blueprint, current_app
@@ -9,32 +11,31 @@ from flask_login import (
 from flask_mail import Message
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadSignature
 
-from .forms import (
+from .forms      import (
     RegistrationForm, LoginForm,
     PasswordResetRequestForm, ResetPasswordForm
 )
-from .extensions import db, login_manager, mail
-from .models import User, Attempt
+from .extensions import db, login_manager, mail, limiter
+from .models     import User, Attempt
 
-# Blueprint for stats endpoints
 stats_bp = Blueprint('stats', __name__)
 
-
 def init_routes(app):
-    # Login loader
+    # ─── User loader & login-manager config ─────────────────────────
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(int(user_id))
 
-    # Login manager settings
-    login_manager.login_view = 'login'
-    login_manager.login_message = None
-    login_manager.needs_refresh_message = None
+    login_manager.login_view           = 'login'
+    login_manager.login_message        = None
+    login_manager.needs_refresh_message= None
 
-    # Serializer for password reset
+    # Serializer for reset tokens
     serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 
+    # ─── Register ────────────────────────────────────────────────────
     @app.route('/register', methods=['GET', 'POST'])
+    @limiter.limit("10 per minute")
     def register():
         if current_user.is_authenticated:
             return redirect(url_for('home'))
@@ -53,7 +54,9 @@ def init_routes(app):
                     flash(f"{label}: {err}", 'error')
         return render_template('register.html', form=form)
 
+    # ─── Login ────────────────────────────────────────────────────────
     @app.route('/login', methods=['GET', 'POST'])
+    @limiter.limit("5 per minute")
     def login():
         if current_user.is_authenticated:
             return redirect(url_for('home'))
@@ -66,6 +69,7 @@ def init_routes(app):
             flash('Invalid credentials.', 'error')
         return render_template('login.html', form=form)
 
+    # ─── Logout / Home / Game ────────────────────────────────────────
     @app.route('/logout')
     @login_required
     def logout():
@@ -82,6 +86,7 @@ def init_routes(app):
     def game():
         return render_template('game.html')
 
+    # ─── Settings Page & Auto-Save Endpoint ─────────────────────────
     @app.route('/settings')
     @login_required
     def settings():
@@ -91,6 +96,22 @@ def init_routes(app):
             text_size=current_user.text_size
         )
 
+    @app.route('/update_settings', methods=['POST'])
+    @login_required
+    @limiter.limit("20 per minute")
+    def update_settings():
+        """
+        Accepts JSON { volume, text_size } and persists it to current_user.
+        Called by both Fetch (Save button) and sendBeacon (on unload).
+        """
+        data = request.get_json() or {}
+        # Coerce to int, fallback to existing
+        current_user.volume    = int(data.get('volume',    current_user.volume))
+        current_user.text_size = int(data.get('text_size', current_user.text_size))
+        db.session.commit()
+        return jsonify(success=True)
+
+    # ─── Submit Results ──────────────────────────────────────────────
     @app.route('/submit_results', methods=['POST'])
     @login_required
     def submit_results():
@@ -119,50 +140,36 @@ def init_routes(app):
         best_time = round(best.time_taken, 2) if best else None
         return jsonify(success=True, best_time=best_time)
 
-    # ─── Password Reset ───────────────────────────────────────────────
-
-
+    # ─── Password Reset Request ──────────────────────────────────────
     @app.route('/reset_password_request', methods=['GET', 'POST'])
+    @limiter.limit("3 per hour")
     def reset_request():
         if current_user.is_authenticated:
             return redirect(url_for('home'))
         form = PasswordResetRequestForm()
         if form.validate_on_submit():
             user = User.query.filter_by(email=form.email.data).first()
-            flash(
-                'If that email is registered, you’ll receive a reset link.',
-                'info'
-            )
+            flash('If that email is registered, you’ll receive a reset link.', 'info')
             if user:
                 token = serializer.dumps(user.id, salt='password-reset-salt')
                 reset_url = url_for('reset_token', token=token, _external=True)
                 current_app.logger.debug('Reset URL: %s', reset_url)
-                print('DEBUG: reset_url ->', reset_url)
-                msg = Message(
-                    'Password Reset Request',
-                    recipients=[user.email]
-                )
+                msg = Message('Password Reset Request', recipients=[user.email])
                 msg.body = (
-                    f'To reset your password, visit:\n\n'
-                    f'{reset_url}\n\n'
+                    f'To reset your password, visit:\n\n{reset_url}\n\n'
                     'If you did not request this, simply ignore this email.'
                 )
                 mail.send(msg)
             return redirect(url_for('login'))
         return render_template('request_reset.html', form=form)
 
-
-    # ─── Password Reset via Token ─────────────────────────────────────────────
+    # ─── Password Reset via Token ────────────────────────────────────
     @app.route('/reset_password/<token>', methods=['GET', 'POST'])
+    @limiter.limit("5 per minute")
     def reset_token(token):
-        # debug
         current_app.logger.debug('Entered reset_token with token: %s', token)
         try:
-            user_id = serializer.loads(
-                token,
-                salt='password-reset-salt',
-                max_age=3600
-            )
+            user_id = serializer.loads(token, salt='password-reset-salt', max_age=3600)
             current_app.logger.debug('Token valid, user_id: %s', user_id)
         except SignatureExpired as e:
             current_app.logger.warning('Token expired: %s', e)
@@ -188,9 +195,7 @@ def init_routes(app):
 
         return render_template('reset_password.html', form=form)
 
-
-    # ─── Stats ────────────────────────────────────────────────────────
-
+    # ─── Stats Blueprints ─────────────────────────────────────────────
     @stats_bp.route('/stats', endpoint='stats')
     @login_required
     def stats_page():
@@ -199,16 +204,16 @@ def init_routes(app):
     @stats_bp.route('/stats_data', methods=['GET'])
     @login_required
     def stats_data():
-        level = request.args.get('level', type=int)
-        metric = request.args.get('metric', type=str)
-        attempts = (
+        level   = request.args.get('level',   type=int)
+        metric  = request.args.get('metric',  type=str)
+        attempts= (
             Attempt.query
             .filter_by(user_id=current_user.id, level=level)
             .order_by(Attempt.timestamp)
             .all()
         )
         timestamps = []
-        values = []
+        values     = []
         for a in attempts:
             timestamps.append(a.timestamp.strftime('%Y-%m-%d %H:%M:%S'))
             if metric == 'accuracy':
@@ -216,3 +221,8 @@ def init_routes(app):
             else:
                 values.append(round(a.time_taken, 2))
         return jsonify({'timestamps': timestamps, 'values': values})
+
+    # ─── Custom 429 Handler ───────────────────────────────────────────
+    @app.errorhandler(429)
+    def rate_limit_exceeded(e):
+        return render_template('429.html'), 429

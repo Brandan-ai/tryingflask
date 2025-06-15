@@ -48,38 +48,55 @@ html, body {
   margin-bottom: 1rem;
 }
 
-/* Slider groups */
-.slider-group {
+slider-group {
   display: flex;
   flex-direction: column;
   width: 100%;
 }
 
-.slider-group label {
-  font-size: 2.2rem;
-  margin-bottom: 0.5rem;
-  text-align: left;
-}
-
 .slider-group input[type="range"] {
-  width: 100%;
-  height: 1.5rem;
   -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 0.5rem;            /* track thickness */
+  background: transparent;   /* let JS fill this */
+  border-radius: 0.25rem;
+  margin: 1rem 0;
+  outline: none;
 }
 
+/* Thumb styling (centered via margin-top) */
 .slider-group input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
+  width: 1.5rem; height: 1.5rem;
   background: #0056b3;
+  border-radius: 50%;
   cursor: pointer;
+  margin-top: -0.5rem;       /* (1.5 - 0.5)/2 */
 }
 
+.slider-group input[type="range"]::-moz-range-thumb {
+  width: 1.5rem; height: 1.5rem;
+  background: #0056b3;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-top: -0.5rem;
+}
+
+/* Hide native track visuals so transparent background shows */
 .slider-group input[type="range"]::-webkit-slider-runnable-track {
   height: 0.5rem;
-  background: #78909c;
-  border-radius: 0.25rem;
+  background: transparent;
+}
+.slider-group input[type="range"]::-moz-range-track {
+  height: 0.5rem;
+  background: transparent;
+}
+.slider-group input[type="range"]::-ms-track {
+  height: 0.5rem;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
 }
 
 /* Save button */

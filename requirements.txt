@@ -7,3 +7,4 @@ Flask-Login
 email-validator
 Flask-Mail
 aiosmtpd
+Flask-Limiter
