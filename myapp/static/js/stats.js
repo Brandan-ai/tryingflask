@@ -81,6 +81,8 @@ document.addEventListener('DOMContentLoaded', () => {
               },
               y: {
                 beginAtZero: true,
+                // ↑ Cap the time graphs at 120s; leave accuracy auto‑scaled
+                max: metric === 'accuracy' ? undefined : 120,
                 title: {
                   display: true,
                   text: metric === 'accuracy' ? 'Accuracy (%)' : 'Time Taken (s)',

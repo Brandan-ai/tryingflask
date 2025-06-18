@@ -58,7 +58,7 @@ button {
 
 /* Setup Screen */
 #setup {
-  position: relative;          /* allow back button to be aligned via flex */
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -66,9 +66,9 @@ button {
   gap: 2.5rem;
   height: 100vh;
   padding: 2rem;
-  max-width: 600px;            /* constrain width */
+  max-width: 600px;
   width: 100%;
-  margin: 0 auto;              /* center card */
+  margin: 0 auto;
 }
 #setup h2 {
   font-size: 3.5rem;
@@ -106,9 +106,9 @@ button {
 
 /* Back-button inside SETUP */
 #setup .back-btn-container {
-  align-self: flex-end;         /* align right edge with dropdowns */
-  margin-top: 1rem;             /* moved closer to start button */
-  width: clamp(2.5rem, 4vw, 3rem); /* slightly smaller */
+  align-self: flex-end;
+  margin-top: 1rem;
+  width: clamp(2.5rem, 4vw, 3rem);
   height: auto;
   cursor: pointer;
   z-index: 10;
@@ -128,12 +128,36 @@ button {
   gap: 2rem;
   width: 100%;
 }
+
+/* Quiz Header: question + progress */
+.quiz-header {
+  position: relative;           /* establish positioning context */
+  margin-bottom: 1rem;
+  padding: 0 2rem;              /* horizontal padding so question doesn't touch edges */
+}
+
 #question-text {
   font-size: 3rem;
   text-align: center;
-  margin-bottom: 1rem;
   color: #1e88e5;
+  margin: 0;
+  width: 100%;
 }
+
+#progress {
+  position: absolute;           /* remove from normal flow */
+  top: 0;                       /* align to top of header */
+  right: 2rem;                  /* same horizontal padding as header */
+  font-size: 3rem;
+  font-weight: bold;
+  color: #2e7d32;
+  background: #e8f5e9;
+  padding: 0.5rem 1rem;
+  border-radius: 0.75rem;
+  text-align: center;
+}
+
+/* Answer Cards */
 #answers {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -184,7 +208,6 @@ button {
   font-weight: bold;
   color: #1565c0;
 }
-/* Inline back button in bottom bar */
 .back-btn-inline {
   width: clamp(3rem, 5vw, 4rem);
   height: auto;
@@ -211,7 +234,6 @@ button {
   box-shadow: 0 12px 30px rgba(0,0,0,0.5);
   z-index: 1000;
 }
-
 #result-modal .modal-content {
   display: flex;
   flex-direction: column;
@@ -225,18 +247,15 @@ button {
   background: #f7fff7;
   margin: 0 auto;
 }
-
 #result-modal h2 {
   font-size: 3rem;
   color: #2e7d32;
   text-align: center;
 }
-
 #result-modal p {
   font-size: 2.2rem;
   text-align: center;
 }
-
 #result-modal button {
   display: flex;
   align-items: center;
@@ -253,20 +272,17 @@ button {
   width: 100%;
   max-width: 300px;
 }
-
 #result-modal button:hover,
 #result-modal button:focus {
   background: #276a28;
   outline: 3px solid #ffc107;
 }
-
 #retry-btn {
   background-image: url('/static/images/game.png');
   background-repeat: no-repeat;
   background-position: 1rem center;
   background-size: 1.5rem;
 }
-
 #home-btn {
   background-image: url('/static/images/home.webp');
   background-repeat: no-repeat;
@@ -282,6 +298,7 @@ button {
   #setup select { font-size: 2.2rem; padding: 1.5rem; }
 
   #question-text { font-size: 3.5rem; }
+  #progress { font-size: 3.5rem; }
   .card { font-size: 3.5rem; }
   #timer { font-size: 3.5rem; }
   #result-modal { max-width: 900px; padding: 3rem; }
@@ -291,12 +308,9 @@ button {
   #result-modal button { font-size: 2.8rem; padding: 1.5rem 3rem; max-width: 350px; }
   #result-modal button { background-size: 2.2rem; }
 
-  /* Increase inline back-button on larger screens */
   .back-btn-inline {
     width: clamp(4rem, 4vw, 5rem);
   }
-
-  /* Slightly increase setup back-button on larger screens */
   #setup .back-btn-container {
     width: clamp(3rem, 4vw, 3.5rem);
     margin-top: 1.5rem;

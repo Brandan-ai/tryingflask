@@ -1,4 +1,3 @@
-<!-- templates/game.html -->
 {% extends "base.html" %}
 {% block title %}Math Quiz{% endblock %}
 
@@ -35,15 +34,22 @@
 
   <!-- QUIZ: hidden until start -->
   <div id="quiz" class="hidden">
-    <h3 id="question-text"></h3>
+    <div class="quiz-header">
+      <h2 id="question-text"></h2>
+      <div id="progress">0/0</div>
+    </div>
+
     <div id="answers">
       <div class="card" data-index="0"></div>
       <div class="card" data-index="1"></div>
       <div class="card" data-index="2"></div>
       <div class="card" data-index="3"></div>
     </div>
+
     <div id="bottom-bar">
-      <div id="timer" aria-live="polite">Time: <span id="time">0.0</span>s</div>
+      <div id="timer" aria-live="polite">
+        Time: <span id="time">0.0</span>s
+      </div>
       <div class="back-btn-inline">
         <a href="{{ url_for('home') }}">
           <img src="{{ url_for('static', filename='images/back-button.png') }}" alt="Back">

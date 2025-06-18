@@ -11,7 +11,7 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.String(128), nullable=False)
 
     volume = db.Column(db.Integer, nullable=False, default=100)        # 0–100%
-    text_size = db.Column(db.Integer, nullable=False, default=100)     # 50–500%
+    text_size = db.Column(db.Integer, nullable=False, default=100)     # 50–200%
 
     attempts = db.relationship('Attempt', back_populates='user', lazy=True)
 

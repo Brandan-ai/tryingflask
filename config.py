@@ -19,6 +19,6 @@ class Config:
     MAIL_DEFAULT_SENDER = ('Super-Maths', 'noreply@local')
 
     # Flask-Limiter
-    RATELIMIT_DEFAULT = "200 per day;50 per hour"
+    RATELIMIT_DEFAULT = "200 per day;50 per hour" #for basically unlimited access use this instead "10000 per day;10000 per hour;1000 per minute"
     RATELIMIT_STORAGE_URL = os.environ.get('RATELIMIT_STORAGE_URL', 'memory://')
     RATELIMIT_HEADERS_ENABLED = True
